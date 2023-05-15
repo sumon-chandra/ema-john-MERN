@@ -18,11 +18,21 @@ const Shop = () => {
   const totalPages = Math.ceil(totalProducts / itemsPerPage);
   const pageNumbers = [...Array(totalPages).keys()];
 
+  // useEffect(() => {
+  //   fetch("http://localhost:5000/products")
+  //     .then((res) => res.json())
+  //     .then((data) => setProducts(data));
+  // }, []);
   useEffect(() => {
-    fetch("http://localhost:5000/products")
-      .then((res) => res.json())
-      .then((data) => setProducts(data));
-  }, []);
+    const fetchData = async () => {
+      const res = await fetch(
+        `http://localhost:5000/products?page=${currentPage}&limit=${itemsPerPage}`
+      );
+      const data = await res.json();
+      setProducts(data);
+    };
+    fetchData();
+  }, [currentPage, itemsPerPage]);
 
   useEffect(() => {
     const storedCart = getShoppingCart();
@@ -69,7 +79,7 @@ const Shop = () => {
     deleteShoppingCart();
   };
 
-  const options = [5, 10, 15];
+  const options = [5, 10, 20];
   const handleSelectChange = (e) => {
     setItemsPerPage(parseInt(e.target.value));
     setCurrentPage(0);

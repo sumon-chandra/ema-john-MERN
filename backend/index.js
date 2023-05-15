@@ -31,7 +31,15 @@ async function run() {
 
     //   Get Products
     app.get("/products", async (req, res) => {
-      const result = await productsCollection.find().toArray();
+      const query = req.query;
+      const page = parseInt(query.page) || 0;
+      const limit = parseInt(query.limit) || 10;
+      const skip = page * limit;
+      const result = await productsCollection
+        .find()
+        .skip(skip)
+        .limit(limit)
+        .toArray();
       res.send(result);
     });
     app.get("/totalProducts", async (req, res) => {
