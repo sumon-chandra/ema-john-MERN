@@ -29,3 +29,8 @@
   text-align: center;
   margin-bottom: 50px;
 }
+.pagination .selected {
+  background-color: #ff9900;
+  border: none;
+  outline: none;
+}
