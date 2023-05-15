@@ -26,11 +26,19 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
+    // Database connection
     const productsCollection = client.db("ema_johnDB").collection("products");
+
+    //   Get Products
     app.get("/products", async (req, res) => {
       const result = await productsCollection.find().toArray();
       res.send(result);
     });
+    app.get("/totalProducts", async (req, res) => {
+      const result = await productsCollection.estimatedDocumentCount();
+      res.send({ totalProducts: result });
+    });
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
